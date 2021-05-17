@@ -8,9 +8,9 @@ function Navbar() {
     <div className={styles.navbar_container}>
       <div className={styles.links_conatiner}>
         <ul className={styles.ul_links}>
-          <Link to="/" style={{ textDecoration: 'None' }}>
-            <li className={styles.li_link}><TwitterIcon/></li>
-          </Link>
+          <li  className={styles.li_link_title}>
+            Covid-Info.all
+          </li>
           <Link to="/" style={{ textDecoration: 'None' }}>
             <li className={styles.li_link}>Live Twitter Analysis</li>
           </Link>

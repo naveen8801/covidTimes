@@ -1,19 +1,11 @@
 import tweepy
-import collections
-import pandas as pd
-import json
 from flask import Flask, jsonify
 import nltk, re
-from bson import json_util
 from flask_cors import CORS
 from dotenv import load_dotenv
-# import tensorflow as tf
-import time
 from flask_socketio import SocketIO
 import os
 from textblob import TextBlob
-import random
-
 nltk.download("stopwords")
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
