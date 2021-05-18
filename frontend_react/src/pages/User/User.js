@@ -174,9 +174,9 @@ function User() {
     <div className={styles.user_conatiner}>
       <div className={styles.home_text_content}>
         <p className={styles.sub_text}>
-          Welcome ,
+          Welcome{' '}
           <strong>
-            'COVID-19 Sentimental Analysis Of Twitter Social Handle '
+            COVID-19 Sentimental Analysis Of Twitter Social Handle{' '}
           </strong>
           through this page you can easily perform analysis of particular
           twitter handle by inputing username of user

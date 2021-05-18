@@ -11,11 +11,6 @@ from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 
 
-# from tensorflow.keras.layers import Embedding
-# from tensorflow.keras.preprocessing.sequence import pad_sequences
-# from tensorflow.keras.preprocessing.text import one_hot
-
-
 app = Flask(__name__)
 CORS(app)
 socketio = SocketIO(app,cors_allowed_origins="*")
@@ -149,7 +144,7 @@ class TwitterStream(tweepy.StreamListener):
 # track=['covid', 'corona', 'covid19', 'coronavirus', 'facemask', 'sanitizer', 'social-distancing']
 
 
-@app.route('/')
+@app.route('/stream')
 def gettweets():
 
     listener = TwitterStream()
@@ -170,6 +165,12 @@ def getuserdata(user):
         tweets = getusertweet(user)
         print(  tweets)
         return jsonify(tweets)
+
+
+@app.route("/", )
+def getuserdata(user):
+
+        return "Welcome !"
 
 
 
