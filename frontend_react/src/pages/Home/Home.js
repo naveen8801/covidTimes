@@ -10,11 +10,17 @@ import TweetCard from '../../components/TweettCard/TweetCard';
 import LineChart from '../../components/LineChart/LineChart';
 import TweetDetailCard from '../../components/TweetDetailCard/TweetDetailCard';
 
-const ENDPOINT = 'http://127.0.0.1:5000';
+// const ENDPOINT = 'http://127.0.0.1:5000';
+const ENDPOINT = 'https://twitter-covid-sentiments.herokuapp.com';
+
+// const ENDPOINT  = 'https://covid19-twitter-analyzer.azurewebsites.net';
+
 
 function Home() {
   const [tweets, settweets] = useState([]);
   const [loader, setLoader] = useState(false);
+
+  const socket = socketIOClient(ENDPOINT);
 
   const startstream = () => {
     startStream()
@@ -27,22 +33,16 @@ function Home() {
   };
 
   const getstreamdata = () => {
-    const socket = socketIOClient(ENDPOINT);
+
     socket.on('tweet_stream', (data) => {
       settweets((tweets) => [...tweets, data]);
     });
   };
 
   useEffect(() => {
-    const socket = socketIOClient(ENDPOINT);
     startstream();
     getstreamdata();
-    socket.disconnect();
   }, []);
-
-  window.onbeforeunload = function () {
-    console.log('j');
-  };
 
   return (
     <div className={styles.home_container}>

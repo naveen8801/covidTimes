@@ -13,16 +13,25 @@ from nltk.stem.porter import PorterStemmer
 
 app = Flask(__name__)
 CORS(app)
-socketio = SocketIO(app,cors_allowed_origins="*")
+socketio = SocketIO(app,cors_allowed_origins="*", logger=True, engineio_logger=True)
 
 APP_ROOT = os.path.join(os.path.dirname(__file__), "..")  # refers to application_top
 dotenv_path = os.path.join(APP_ROOT, ".env")
 load_dotenv(dotenv_path)
 
+API_KEY="NrmHvUeDysnKRObAUkRkcDH6s"
+API_SECRET_KEY="s0YqX5h3cxlHQgByP6u8qsyOdDbJW4lL0YnayJJDnBdvMfhrBx"
+ACCESS_TOKEN="1246008382323998721-AWvGrsV2xIT6B7oEt3TqdFaySJW3Gi"
+ACCESS_TOKEN_SECRET="fVH2TldMJLlLXbuSRhFCSQqPwQRHVnioEtinBo6Q2qXAS"
 
-auth = tweepy.OAuthHandler(os.getenv("API_KEY"), os.getenv("API_SECRET_KEY"))
-auth.set_access_token(os.getenv("ACCESS_TOKEN"), os.getenv("ACCESS_TOKEN_SECRET"))
+auth = tweepy.OAuthHandler(API_KEY,API_SECRET_KEY)
+auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 api = tweepy.API(auth)
+
+#
+# auth = tweepy.OAuthHandler(os.getenv("API_KEY"), os.getenv("API_SECRET_KEY"))
+# auth.set_access_token(os.getenv("ACCESS_TOKEN"), os.getenv("ACCESS_TOKEN_SECRET"))
+# api = tweepy.API(auth)
 
 tweets_list = []
 streams = []
@@ -94,11 +103,12 @@ def getusertweet(username):
 
 
 class TwitterStream(tweepy.StreamListener):
-    def __init__(self, api=None):
+    def __init__(self, api=None,):
         super(TwitterStream, self).__init__()
         self.timer_tweets = 0
         self.tweet_send = 0
         self.sno = 0
+        self.stopstream = False
 
     def on_connect(self):
         # Function called to connect to the Twitter Stream
@@ -141,39 +151,35 @@ class TwitterStream(tweepy.StreamListener):
                     self.timer_tweets=0
                     self.sno +=1
 
+        @socketio.on('disconnect')
+        def disconnect_details():
+           self.stopstream = True
+           return False
+
+
 # track=['covid', 'corona', 'covid19', 'coronavirus', 'facemask', 'sanitizer', 'social-distancing']
 
 
 @app.route('/stream')
 def gettweets():
-
     listener = TwitterStream()
     streamer = tweepy.Stream(auth=auth, listener=listener, tweet_mode='extended')
     streams.append(streamer)
-    streamer.filter(track=['covid', 'corona', 'covid19', 'coronavirus', 'facemask', 'sanitizer', 'social-distancing'])
-
-    @socketio.on('client_disconnecting')
-    def disconnect_details(data):
-        print("stopping")
-        streamer.disconnect()
-
+    streamer.filter(track=['covid', 'corona', 'covid19', 'coronavirus', 'facemask', 'sanitizer', 'social-distancing'] , is_async=True)
     return jsonify(' STREAM started !!')
 
 
 @app.route("/get_user/<user>", methods=["GET"])
 def getuserdata(user):
         tweets = getusertweet(user)
-        print(  tweets)
+        print(tweets)
         return jsonify(tweets)
 
 
 @app.route("/", )
-def getuserdata(user):
-
+def start():
         return "Welcome !"
-
-
 
 if __name__ == "__main__":
 
-    socketio.run(app , debug= True)
+    socketio.run(app)

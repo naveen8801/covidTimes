@@ -76,6 +76,7 @@ function User() {
   const sumbitted = async (input) => {
     setshow(false);
     const data = await getuserTweets(input);
+    console.log(data);
     const main_data = data.data;
     var positive_tweets = 0;
     var negative_tweets = 0;
