@@ -19,19 +19,9 @@ APP_ROOT = os.path.join(os.path.dirname(__file__), "..")  # refers to applicatio
 dotenv_path = os.path.join(APP_ROOT, ".env")
 load_dotenv(dotenv_path)
 
-API_KEY="NrmHvUeDysnKRObAUkRkcDH6s"
-API_SECRET_KEY="s0YqX5h3cxlHQgByP6u8qsyOdDbJW4lL0YnayJJDnBdvMfhrBx"
-ACCESS_TOKEN="1246008382323998721-AWvGrsV2xIT6B7oEt3TqdFaySJW3Gi"
-ACCESS_TOKEN_SECRET="fVH2TldMJLlLXbuSRhFCSQqPwQRHVnioEtinBo6Q2qXAS"
-
-auth = tweepy.OAuthHandler(API_KEY,API_SECRET_KEY)
-auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+auth = tweepy.OAuthHandler(os.getenv("API_KEY"), os.getenv("API_SECRET_KEY"))
+auth.set_access_token(os.getenv("ACCESS_TOKEN"), os.getenv("ACCESS_TOKEN_SECRET"))
 api = tweepy.API(auth)
-
-#
-# auth = tweepy.OAuthHandler(os.getenv("API_KEY"), os.getenv("API_SECRET_KEY"))
-# auth.set_access_token(os.getenv("ACCESS_TOKEN"), os.getenv("ACCESS_TOKEN_SECRET"))
-# api = tweepy.API(auth)
 
 tweets_list = []
 streams = []
