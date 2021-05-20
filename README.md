@@ -10,7 +10,5 @@ Backend - Python Flask
 
 # Deployment
 
-https://covidtimes.netlify.app/
-
 - Api is deployed on heroku cloud platform 
 https://twitter-covid-sentiments.herokuapp.com/
