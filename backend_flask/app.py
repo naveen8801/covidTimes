@@ -164,7 +164,6 @@ class TwitterStream(tweepy.StreamListener):
 def gettweets():
     listener = TwitterStream()
     streamer = tweepy.Stream(auth=auth, listener=listener, tweet_mode='extended')
-    streams.append(streamer)
     streamer.filter(track=['covid', 'corona', 'covid19', 'coronavirus', 'facemask', 'sanitizer', 'social-distancing'] , is_async=True)
     return jsonify(' STREAM started !!')
 

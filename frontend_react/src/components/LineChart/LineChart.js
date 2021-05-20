@@ -1,20 +1,21 @@
+import { SnackbarContent } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { defaults } from 'react-chartjs-2';
 import socketIOClient from 'socket.io-client';
 
 defaults.global.animation = true;
-defaults.global.defaultFontColor = 'white';
+defaults.global.defaultFontColor = 'black';
 defaults.global.defaultFontSize = 12;
 
-console.log(defaults.global);
 
-const ENDPOINT = 'http://127.0.0.1:5000';
-// const ENDPOINT = 'https://twitter-covid-sentiments.herokuapp.com';
+// const ENDPOINT = 'http://127.0.0.1:5000';
+const ENDPOINT = 'https://twitter-covid-sentiments.herokuapp.com';
 
 // const ENDPOINT = 'https://covid19-twitter-analyzer.azurewebsites.net';
 
 function LineChart() {
+  const [sno, setsno] = useState(1);
   const [labels_, setlabels] = useState([]);
   const [polarityvalues, setpolarityvalues] = useState([]);
   const [subjectivityvalue, setsubjectivityvalue] = useState([]);
@@ -71,9 +72,9 @@ function LineChart() {
   useEffect(() => {
     const socket = socketIOClient(ENDPOINT);
     socket.on('tweet_stream', (data) => {
-      var newlabel = data.sno;
       var newpolarity = data.polarity;
       var newsubjetivity = data.subjectivity;
+      var new_label = data.created_at.split(" ")[1];
       var old_label = labels_;
       var old_polarities = polarityvalues;
       var old_subjectivities = subjectivityvalue;
@@ -82,7 +83,7 @@ function LineChart() {
         old_polarities.shift();
         old_subjectivities.shift();
       }
-      old_label.push(newlabel);
+      old_label.push(new_label);
       old_polarities.push(newpolarity);
       old_subjectivities.push(newsubjetivity);
 
@@ -167,5 +168,7 @@ function LineChart() {
     </div>
   );
 }
+
+
 
 export default LineChart;

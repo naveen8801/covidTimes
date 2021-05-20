@@ -4,8 +4,8 @@ import styles from './Navbar.module.css';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import socketIOClient, { io } from 'socket.io-client';
 
-const ENDPOINT = 'http://127.0.0.1:5000';
-// const ENDPOINT = 'https://twitter-covid-sentiments.herokuapp.com';
+// const ENDPOINT = 'http://127.0.0.1:5000';
+const ENDPOINT = 'https://twitter-covid-sentiments.herokuapp.com';
 const socket = socketIOClient(ENDPOINT);
 
 function Navbar() {
