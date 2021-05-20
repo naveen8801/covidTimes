@@ -9,8 +9,8 @@ defaults.global.defaultFontSize = 12;
 
 console.log(defaults.global);
 
-// const ENDPOINT = 'http://127.0.0.1:5000';
-const ENDPOINT = 'https://twitter-covid-sentiments.herokuapp.com';
+const ENDPOINT = 'http://127.0.0.1:5000';
+// const ENDPOINT = 'https://twitter-covid-sentiments.herokuapp.com';
 
 // const ENDPOINT = 'https://covid19-twitter-analyzer.azurewebsites.net';
 

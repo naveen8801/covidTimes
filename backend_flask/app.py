@@ -15,13 +15,20 @@ app = Flask(__name__)
 CORS(app)
 socketio = SocketIO(app,cors_allowed_origins="*", logger=True, engineio_logger=True)
 
-APP_ROOT = os.path.join(os.path.dirname(__file__), "..")  # refers to application_top
-dotenv_path = os.path.join(APP_ROOT, ".env")
-load_dotenv(dotenv_path)
+# APP_ROOT = os.path.join(os.path.dirname(__file__), "..")  # refers to application_top
+# dotenv_path = os.path.join(APP_ROOT, ".env")
+# load_dotenv(dotenv_path)
 
-auth = tweepy.OAuthHandler(os.getenv("API_KEY"), os.getenv("API_SECRET_KEY"))
-auth.set_access_token(os.getenv("ACCESS_TOKEN"), os.getenv("ACCESS_TOKEN_SECRET"))
+API_KEY="NrmHvUeDysnKRObAUkRkcDH6s"
+API_SECRET_KEY="s0YqX5h3cxlHQgByP6u8qsyOdDbJW4lL0YnayJJDnBdvMfhrBx"
+ACCESS_TOKEN="1246008382323998721-AWvGrsV2xIT6B7oEt3TqdFaySJW3Gi"
+ACCESS_TOKEN_SECRET="fVH2TldMJLlLXbuSRhFCSQqPwQRHVnioEtinBo6Q2qXAS"
+
+auth = tweepy.OAuthHandler(API_KEY, API_SECRET_KEY)
+auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 api = tweepy.API(auth)
+
+
 
 tweets_list = []
 streams = []
@@ -113,39 +120,42 @@ class TwitterStream(tweepy.StreamListener):
         self,
         status,
     ):
+        if self.stopstream == False:
+            if "RT @" not in status.text and status.lang == "en":
+                if hasattr(status, "extended_tweet"):
+                    self.timer_tweets += 1
+                    tweet_detail = {
+                        "sno" : self.sno,
+                        "tweet_id" : status.id_str,
+                        "user_id" : status.user.id_str,
+                        "name": status.user.screen_name,
+                        "text": status.extended_tweet["full_text"],
+                        "location": status.user.location,
+                        "created_at":str(status.created_at),
+                        "profileimage":status.user.profile_image_url,
+                    }
+                    sentiment = getsentimentusingtextbolb(tweet_detail['text'])
+                    tweet_detail['polarity'] = round(sentiment[0],2)
+                    tweet_detail['subjectivity'] = round(sentiment[1],2)
+                    if (sentiment[0] >= 0):
+                        tweet_detail['Sentiment'] = 'Positive'
+                    else:
+                        tweet_detail['Sentiment'] = 'Negative'
+                    self.tweet_send +=1
+                    print(tweet_detail)
+                    if(self.timer_tweets>5):
+                        socketio.emit('tweet_stream', tweet_detail, namespace='/', )
+                        self.timer_tweets=0
+                        self.sno +=1
 
-        # Function connects to the defined MongoDB and stores the filtered tweets
-        if "RT @" not in status.text and status.lang == "en":
-            if hasattr(status, "extended_tweet"):
-                self.timer_tweets += 1
-                tweet_detail = {
-                    "sno" : self.sno,
-                    "tweet_id" : status.id_str,
-                    "user_id" : status.user.id_str,
-                    "name": status.user.screen_name,
-                    "text": status.extended_tweet["full_text"],
-                    "location": status.user.location,
-                    "created_at":str(status.created_at),
-                    "profileimage":status.user.profile_image_url,
-                }
-                sentiment = getsentimentusingtextbolb(tweet_detail['text'])
-                tweet_detail['polarity'] = round(sentiment[0],2)
-                tweet_detail['subjectivity'] = round(sentiment[1],2)
-                if (sentiment[0] >= 0):
-                    tweet_detail['Sentiment'] = 'Positive'
-                else:
-                    tweet_detail['Sentiment'] = 'Negative'
-                self.tweet_send +=1
-                if(self.timer_tweets>5):
-                    socketio.emit('tweet_stream', tweet_detail, namespace='/', )
-                    self.timer_tweets=0
-                    self.sno +=1
-
-        @socketio.on('disconnect')
-        def disconnect_details():
-           self.stopstream = True
-           return False
-
+                    @socketio.on('disconnecting_me', namespace='/')
+                    def disconnect_details(data):
+                        self.stopstream = True
+                        print(data)
+                        return False
+        else :
+            print("Exiting the stream!!")
+            return False
 
 # track=['covid', 'corona', 'covid19', 'coronavirus', 'facemask', 'sanitizer', 'social-distancing']
 
