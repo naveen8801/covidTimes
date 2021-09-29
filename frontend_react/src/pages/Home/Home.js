@@ -9,11 +9,11 @@ import Counter from './Counter/Counter';
 import TweetCard from '../../components/TweettCard/TweetCard';
 import LineChart from '../../components/LineChart/LineChart';
 import TweetDetailCard from '../../components/TweetDetailCard/TweetDetailCard';
+import moment from 'moment';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-// const ENDPOINT = 'http://127.0.0.1:5000';
-const ENDPOINT = 'https://twitter-covid-sentiments.herokuapp.com';
-
-// const ENDPOINT  = 'https://covid19-twitter-analyzer.azurewebsites.net';
+const ENDPOINT = 'http://127.0.0.1:5000';
 
 function Home() {
   const [tweets, settweets] = useState([]);
@@ -27,13 +27,14 @@ function Home() {
         console.log(res);
       })
       .catch((error) => {
+        toast.error(`500 Internal Error`);
         console.log(error);
       });
   };
 
   const getstreamdata = () => {
     socket.on('tweet_stream', (data) => {
-      settweets((tweets) => [...tweets, data]);
+      settweets((tweets) => [data, ...tweets]);
     });
   };
 
@@ -44,13 +45,17 @@ function Home() {
 
   return (
     <div className={styles.home_container}>
+      <ToastContainer position="bottom-center" />
+      <div>
+        <LineChart tweets={tweets} />
+      </div>
       <div className={styles.data}>
-        {tweets.length !== 0 ? (
+        {/* {tweets.length !== 0 ? (
           tweets.slice(tweets.length - 1, tweets.length).map((item) => {
             return (
               <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <div>
-                  <LineChart />
+                  <LineChart data={tweets} />
                 </div>
                 <div
                   style={{
@@ -105,7 +110,7 @@ function Home() {
           <div>
             <CircularProgress />
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

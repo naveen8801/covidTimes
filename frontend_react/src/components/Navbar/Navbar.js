@@ -4,9 +4,8 @@ import styles from './Navbar.module.css';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import socketIOClient, { io } from 'socket.io-client';
 
-// const ENDPOINT = 'http://127.0.0.1:5000';
-const ENDPOINT = 'https://twitter-covid-sentiments.herokuapp.com';
-const socket = socketIOClient(ENDPOINT);
+const ENDPOINT = 'http://127.0.0.1:5000';
+// const ENDPOINT = 'https://twitter-covid-sentiments.herokuapp.com';
 
 function Navbar() {
   return (
@@ -18,14 +17,7 @@ function Navbar() {
             <li className={styles.li_link}>Live Twitter Analysis</li>
           </Link>
           <Link to="/user_analysis" style={{ textDecoration: 'None' }}>
-            <li
-              className={styles.li_link}
-              onClick={() => {
-                socket.emit('disconnecting_me', { username: 'I AM GONE' });
-              }}
-            >
-              User Analysis
-            </li>
+            <li className={styles.li_link}>User Analysis</li>
           </Link>
         </ul>
       </div>

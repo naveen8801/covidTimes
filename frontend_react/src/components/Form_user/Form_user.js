@@ -1,13 +1,11 @@
 import { Button } from '@material-ui/core';
-import React , {useState} from 'react';
+import React, { useState } from 'react';
 import styles from './Form_user.module.css';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import TextField from '@material-ui/core/TextField';
 
-
-function Form_user({sumbitted}) {
-
-    const [inputvalue, setinputvaluye] = useState("")
+function Form_user({ sumbitted }) {
+  const [inputvalue, setinputvaluye] = useState('');
 
   return (
     <div className={styles.form}>
@@ -19,10 +17,16 @@ function Form_user({sumbitted}) {
           variant="outlined"
           className={styles.input_field}
           value={inputvalue}
-          onChange={(e)=>setinputvaluye(e.target.value)}
+          onChange={(e) => setinputvaluye(e.target.value)}
         />
         <div className={styles.btn_div}>
-          <Button variant="contained" color="primary" href="#contained-buttons" className={styles.button} onClick={()=>sumbitted(inputvalue)}>
+          <Button
+            variant="contained"
+            color="primary"
+            href="#contained-buttons"
+            className={styles.button}
+            onClick={() => sumbitted(inputvalue)}
+          >
             Submit
           </Button>
         </div>

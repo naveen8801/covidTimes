@@ -9,11 +9,13 @@ from textblob import TextBlob
 nltk.download("stopwords")
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
+from datetime import datetime
+from datetime import timedelta
 
 
 app = Flask(__name__)
 CORS(app)
-socketio = SocketIO(app,cors_allowed_origins="*", logger=True, engineio_logger=True)
+io = SocketIO(app,cors_allowed_origins="*", logger=True, engineio_logger=True)
 
 # APP_ROOT = os.path.join(os.path.dirname(__file__), "..")  # refers to application_top
 # dotenv_path = os.path.join(APP_ROOT, ".env")
@@ -81,7 +83,7 @@ def getusertweet(username):
                         "tweet_id":status.id_str,
                         "text": status.full_text,
                         "location": status.user.location,
-                        "created_at":str(status.created_at),
+                        "created_at":status.created_at.strftime("%Y-%m-%d %H:%M:%S"),
                         "profileimage":status.user.profile_image_url,
                     }
             sentiment = getsentimentusingtextbolb(tweet['text'])
@@ -103,9 +105,6 @@ class TwitterStream(tweepy.StreamListener):
     def __init__(self, api=None,):
         super(TwitterStream, self).__init__()
         self.timer_tweets = 0
-        self.tweet_send = 0
-        self.sno = 0
-        self.stopstream = False
 
     def on_connect(self):
         # Function called to connect to the Twitter Stream
@@ -120,18 +119,16 @@ class TwitterStream(tweepy.StreamListener):
         self,
         status,
     ):
-        if self.stopstream == False:
             if "RT @" not in status.text and status.lang == "en":
                 if hasattr(status, "extended_tweet"):
                     self.timer_tweets += 1
                     tweet_detail = {
-                        "sno" : self.sno,
                         "tweet_id" : status.id_str,
                         "user_id" : status.user.id_str,
                         "name": status.user.screen_name,
                         "text": status.extended_tweet["full_text"],
                         "location": status.user.location,
-                        "created_at":str(status.created_at),
+                        "created_at":status.created_at.strftime("%Y-%m-%d %H:%M:%S"),
                         "profileimage":status.user.profile_image_url,
                     }
                     sentiment = getsentimentusingtextbolb(tweet_detail['text'])
@@ -141,29 +138,21 @@ class TwitterStream(tweepy.StreamListener):
                         tweet_detail['Sentiment'] = 'Positive'
                     else:
                         tweet_detail['Sentiment'] = 'Negative'
-                    self.tweet_send +=1
                     print(tweet_detail)
-                    if(self.timer_tweets>5):
-                        socketio.emit('tweet_stream', tweet_detail, namespace='/', )
-                        self.timer_tweets=0
-                        self.sno +=1
+                    if(self.timer_tweets==13):
+                        io.emit('tweet_stream', tweet_detail)
+                        self.timer_tweets = 0
 
-                    @socketio.on('disconnecting_me', namespace='/')
-                    def disconnect_details(data):
-                        self.stopstream = True
-                        print(data)
-                        return False
-        else :
-            print("Exiting the stream!!")
-            return False
 
 # track=['covid', 'corona', 'covid19', 'coronavirus', 'facemask', 'sanitizer', 'social-distancing']
 
-
 @app.route('/stream')
 def gettweets():
+    for stream in streams:
+        stream.disconnect()
     listener = TwitterStream()
     streamer = tweepy.Stream(auth=auth, listener=listener, tweet_mode='extended')
+    streams.append(streamer)
     streamer.filter(track=['covid', 'corona', 'covid19', 'coronavirus', 'facemask', 'sanitizer', 'social-distancing'] , is_async=True)
     return jsonify(' STREAM started !!')
 
@@ -181,4 +170,4 @@ def start():
 
 if __name__ == "__main__":
 
-    socketio.run(app)
+    io.run(app)

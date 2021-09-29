@@ -8,13 +8,11 @@ defaults.global.animation = true;
 defaults.global.defaultFontColor = 'black';
 defaults.global.defaultFontSize = 12;
 
-
-// const ENDPOINT = 'http://127.0.0.1:5000';
-const ENDPOINT = 'https://twitter-covid-sentiments.herokuapp.com';
+const ENDPOINT = 'http://127.0.0.1:5000';
 
 // const ENDPOINT = 'https://covid19-twitter-analyzer.azurewebsites.net';
 
-function LineChart() {
+function LineChart(props) {
   const [sno, setsno] = useState(1);
   const [labels_, setlabels] = useState([]);
   const [polarityvalues, setpolarityvalues] = useState([]);
@@ -70,29 +68,25 @@ function LineChart() {
   });
 
   useEffect(() => {
-    const socket = socketIOClient(ENDPOINT);
-    socket.on('tweet_stream', (data) => {
-      var newpolarity = data.polarity;
-      var newsubjetivity = data.subjectivity;
-      var new_label = data.created_at.split(" ")[1];
-      var old_label = labels_;
-      var old_polarities = polarityvalues;
-      var old_subjectivities = subjectivityvalue;
-      if (old_label.length >= 5) {
-        old_label.shift();
-        old_polarities.shift();
-        old_subjectivities.shift();
+    if (props.tweets.length > 0) {
+      let oldlabels = labels_;
+      let oldpolarityvalues = polarityvalues;
+      let oldsubjectivityvalue = subjectivityvalue;
+      if (oldlabels.length > 10 && oldlabels.length > 5) {
+        oldpolarityvalues.shift();
+        oldsubjectivityvalue.shift();
+        oldlabels.shift();
       }
-      old_label.push(new_label);
-      old_polarities.push(newpolarity);
-      old_subjectivities.push(newsubjetivity);
+      oldlabels.push(props.tweets[0].created_at.split(' ')[1]);
+      oldpolarityvalues.push(props.tweets[0].polarity);
+      oldsubjectivityvalue.push(props.tweets[0].subjectivity);
 
       const temp = {
-        labels: old_label,
+        labels: oldlabels,
         datasets: [
           {
             label: 'Polarity',
-            data: old_polarities,
+            data: oldpolarityvalues,
             fill: false,
             lineTension: 0.2,
             backgroundColor: '#f21170',
@@ -114,7 +108,7 @@ function LineChart() {
           },
           {
             label: 'Subjectivity',
-            data: old_subjectivities,
+            data: oldsubjectivityvalue,
             fill: false,
             lineTension: 0.2,
             backgroundColor: '#511281',
@@ -136,11 +130,9 @@ function LineChart() {
           },
         ],
       };
-
       setdata(temp);
-      console.log(temp);
-    });
-  }, []);
+    }
+  }, [props]);
 
   return (
     <div
@@ -168,7 +160,5 @@ function LineChart() {
     </div>
   );
 }
-
-
 
 export default LineChart;
