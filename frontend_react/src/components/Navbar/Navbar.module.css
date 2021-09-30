@@ -1,7 +1,7 @@
 .navbar_container {
   display: inline-block;
   width: 100%;
-  height: 50px;
+  height: 40px;
   margin: 0px;
   padding: 6px;
   margin-bottom: 1.5rem;
@@ -19,10 +19,13 @@
   font-size: 15px;
 }
 
+
 .ul_links {
   text-align: left;
   list-style: none;
   display: flex;
+    margin: 0;
+  padding: 0;
 }
 
 .li_link {

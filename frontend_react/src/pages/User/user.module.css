@@ -1,37 +1,72 @@
-.user_conatiner {
-  widows: 100%;
-  text-align: center;
-  margin-top: 8px;
-}
-.sub_text {
-  font-family: 'Montserrat', sans-serif;
-  color: white;
-}
-.home_text_content {
-  display: inline-block;
-  padding: 8px;
-  width: 50%;
-}
-
-.hr_liner {
-  width: 75%;
-}
-
-
-.chart{
-    display: inline-block;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    margin: 8px;
-}
-.chart_{
+.search_cont {
   width: 100%;
-      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    margin: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.heading{
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  text-decoration: underline;
-  color: white;
+.form {
+  width: 300px;
+  height: 200px;
+  background-color: #343a40 !important;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.input {
+  height: 42px;
+  border-radius: 8px;
+  width: 80%;
+  outline: none;
+  border: none;
+  padding: 0.3rem;
+}
+
+.input:active {
+  outline: none;
+  border: none;
+}
+
+.input::placeholder {
+  font-size: 14px;
+  padding: 0.3rem;
+}
+
+.result_cont {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.chart_cont {
+  width: 90%;
+  height: 300px;
+  margin: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.tweetlist {
+  width: 90%;
+  height: 100%;
+  margin: 1.5rem;
+}
+
+.donut {
+  width: 300px;
+  height: 300px;
+}
+
+.tweetscroll {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  overflow-x: auto;
+  flex-wrap: wrap;
 }

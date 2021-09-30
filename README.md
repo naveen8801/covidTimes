@@ -10,5 +10,8 @@ Backend - Python Flask
 
 # Deployment
 
+- Dashboard deployed on Firebase
+https://covidtimes.web.app/
+
 - Api is deployed on heroku cloud platform 
 https://twitter-covid-sentiments.herokuapp.com/

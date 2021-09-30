@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { startStream } from '../../api';
-import Navbar from '../../components/Navbar/Navbar';
-import Tweets from '../../components/tweets/Tweets';
 import styles from './home.module.css';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import socketIOClient, { io } from 'socket.io-client';
-import Counter from './Counter/Counter';
-import TweetCard from '../../components/TweettCard/TweetCard';
-import LineChart from '../../components/LineChart/LineChart';
-import TweetDetailCard from '../../components/TweetDetailCard/TweetDetailCard';
+import socketIOClient from 'socket.io-client';
 import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,11 +11,11 @@ import BarChart from '../../components/BarChart/BarChart';
 import CounterCard from '../../components/CounterCard/CounterCard';
 import NewTweetCard from '../../components/NewTweetCard/NewTweetCard';
 
-const ENDPOINT = 'http://127.0.0.1:5000';
+// const ENDPOINT = 'http://127.0.0.1:5000';
+const ENDPOINT = 'https://covid-19-realtime.azurewebsites.net/';
 
 function Home() {
   const [tweets, settweets] = useState([]);
-  const [loader, setLoader] = useState(false);
   const [stats, setstats] = useState([0, 0, 0]);
 
   const socket = socketIOClient(ENDPOINT);
@@ -59,32 +53,50 @@ function Home() {
     <div className={styles.home_container}>
       <ToastContainer position="bottom-center" />
       <div className={styles.flexitems1}>
-        <div className={styles.chartsdiv}>
-          <NewLineChart data={tweets} />
-        </div>
-        <div className={styles.chartsdiv}>
-          <BarChart data={stats} />
-        </div>
+        {tweets.length > 0 ? (
+          <>
+            <div className={styles.chartsdiv}>
+              <NewLineChart data={tweets} />
+            </div>
+            <div className={styles.chartsdiv}>
+              <BarChart data={stats} />
+            </div>
+          </>
+        ) : (
+          <CircularProgress />
+        )}
       </div>
       <div className={styles.flexItemCard}>
-        <CounterCard title="Total" count={stats[0] + stats[1] + stats[2]} />
-        <CounterCard title="Positive" count={stats[0]} />
-        <CounterCard title="Negative" count={stats[1]} />
+        {tweets.length > 0 ? (
+          <>
+            <CounterCard title="Total" count={stats[0] + stats[1] + stats[2]} />
+            <CounterCard title="Positive" count={stats[0]} />
+            <CounterCard title="Negative" count={stats[1]} />
+          </>
+        ) : (
+          <CircularProgress />
+        )}
       </div>
       <div className={styles.flexitems2}>
-        <div className={styles.livetweetboard}>
-          {tweets.map((i) => (
-            <NewTweetCard
-              key={i.tweet_id}
-              img={i.profileimage}
-              name={i.name}
-              time={moment(i.created_at).fromNow()}
-              text={i.text}
-              sentiment={i.Sentiment}
-              location={i.location}
-            />
-          ))}
-        </div>
+        {tweets.length > 0 ? (
+          <>
+            <div className={styles.livetweetboard}>
+              {tweets.map((i) => (
+                <NewTweetCard
+                  key={i.tweet_id}
+                  img={i.profileimage}
+                  name={i.name}
+                  time={moment(i.created_at).fromNow()}
+                  text={i.text}
+                  sentiment={i.Sentiment}
+                  location={i.location}
+                />
+              ))}
+            </div>
+          </>
+        ) : (
+          <CircularProgress />
+        )}
       </div>
     </div>
   );

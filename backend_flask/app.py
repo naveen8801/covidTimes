@@ -21,10 +21,10 @@ io = SocketIO(app,cors_allowed_origins="*", logger=True, engineio_logger=True)
 # dotenv_path = os.path.join(APP_ROOT, ".env")
 # load_dotenv(dotenv_path)
 
-API_KEY="
-API_SECRET_KEY=""
-ACCESS_TOKEN=""
-ACCESS_TOKEN_SECRET=""
+API_KEY="NrmHvUeDysnKRObAUkRkcDH6s"
+API_SECRET_KEY="s0YqX5h3cxlHQgByP6u8qsyOdDbJW4lL0YnayJJDnBdvMfhrBx"
+ACCESS_TOKEN="1246008382323998721-AWvGrsV2xIT6B7oEt3TqdFaySJW3Gi"
+ACCESS_TOKEN_SECRET="fVH2TldMJLlLXbuSRhFCSQqPwQRHVnioEtinBo6Q2qXAS"
 
 auth = tweepy.OAuthHandler(API_KEY, API_SECRET_KEY)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
@@ -64,6 +64,11 @@ def Clean_tweets(tweet):
     return tweet_cleaned
 
 
+def RemoveMentionsFromTweetText(text):
+    new_text = re.sub("@[A-Za-z0-9_]+", "", text)
+    return new_text.strip()
+
+
 def getusertweet(username):
     track = []
     user_tweets = []
@@ -80,7 +85,7 @@ def getusertweet(username):
                         "name": status.user.screen_name,
                         "user_id":status.user.id_str,
                         "tweet_id":status.id_str,
-                        "text": status.full_text,
+                        "text": RemoveMentionsFromTweetText(status.full_text),
                         "location": status.user.location,
                         "created_at":status.created_at.strftime("%Y-%m-%d %H:%M:%S"),
                         "profileimage":status.user.profile_image_url,
@@ -88,10 +93,12 @@ def getusertweet(username):
             sentiment = getsentimentusingtextbolb(tweet['text'])
             tweet['Polarity'] = round(sentiment[0],2)
             tweet['Subjectivity'] = round(sentiment[1],2)
-            if (sentiment[0] >= 0):
+            if (sentiment[0] >= 0.3 ):
                 tweet['Sentiment'] = 'Positive'
-            else:
+            elif(sentiment[0]<0.3):
                 tweet['Sentiment'] = 'Negative'
+            else:
+                tweet['Sentiment'] = 'Neutral'
 
 
             user_tweets.append(tweet)

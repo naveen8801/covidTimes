@@ -14,10 +14,8 @@ function NewTweetCard(props) {
       return '#3F5468';
     }
   };
-
-  console.log(props);
   return (
-    <Card className={styles.tweetcardcont}>
+    <Card className={props.user ? styles.extra : styles.tweetcardcont}>
       <div className={styles.flexBox}>
         <div className={styles.flexbox1}>
           <img src={props.img} className={styles.img} alt="user-logo" />

@@ -3,6 +3,11 @@
   margin: 0.8rem;
 }
 
+.extra {
+  margin: 0.8rem;
+  width: 400px;
+}
+
 .flexBox {
   display: flex;
   flex-direction: row;
