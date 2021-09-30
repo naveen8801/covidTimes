@@ -46,7 +46,6 @@
 
 .livetweetboard {
   width: 80%;
-  background-color: pink;
   height: 80%;
   overflow-y: auto;
 }
@@ -70,4 +69,49 @@
 .hr_liner {
   margin-bottom: 1.5rem;
   width: 100%;
+}
+
+@media only screen and (max-width: 903px) {
+  .home_container {
+    width: 100%;
+    text-align: center;
+    margin-top: 8px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .flexItemCard {
+    width: 100%;
+    flex-direction: row;
+  }
+  .flexitems2 {
+    height: 520px;
+    width: 100%;
+    margin: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .flexitems1 {
+    height: 600px;
+    width: 100%;
+    margin: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .chartsdiv {
+    width: 60%;
+    height: 50%;
+    margin: 0.8rem;
+  }
+  .livetweetboard {
+    width: 95%;
+    height: 500px;
+  }
 }

@@ -15,12 +15,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import NewLineChart from '../../components/NewLineChart/NewLineChart';
 import BarChart from '../../components/BarChart/BarChart';
 import CounterCard from '../../components/CounterCard/CounterCard';
+import NewTweetCard from '../../components/NewTweetCard/NewTweetCard';
 
 const ENDPOINT = 'http://127.0.0.1:5000';
 
 function Home() {
   const [tweets, settweets] = useState([]);
   const [loader, setLoader] = useState(false);
+  const [stats, setstats] = useState([0, 0, 0]);
 
   const socket = socketIOClient(ENDPOINT);
 
@@ -46,24 +48,43 @@ function Home() {
     getstreamdata();
   }, []);
 
+  useEffect(() => {
+    let positive = tweets.filter((i) => i.Sentiment === 'Positive').length;
+    let negative = tweets.filter((i) => i.Sentiment === 'Negative').length;
+    let neutral = tweets.filter((i) => i.Sentiment === 'Neutral').length;
+    setstats([positive, negative, neutral]);
+  }, [tweets]);
+
   return (
     <div className={styles.home_container}>
       <ToastContainer position="bottom-center" />
       <div className={styles.flexitems1}>
         <div className={styles.chartsdiv}>
-          <NewLineChart />
+          <NewLineChart data={tweets} />
         </div>
         <div className={styles.chartsdiv}>
-          <BarChart />
+          <BarChart data={stats} />
         </div>
       </div>
       <div className={styles.flexItemCard}>
-        <CounterCard title="Total" count={50} />
-        <CounterCard title="Positive" count={23} />
-        <CounterCard title="Negative" count={13} />
+        <CounterCard title="Total" count={stats[0] + stats[1] + stats[2]} />
+        <CounterCard title="Positive" count={stats[0]} />
+        <CounterCard title="Negative" count={stats[1]} />
       </div>
       <div className={styles.flexitems2}>
-        <div className={styles.livetweetboard}></div>
+        <div className={styles.livetweetboard}>
+          {tweets.map((i) => (
+            <NewTweetCard
+              key={i.tweet_id}
+              img={i.profileimage}
+              name={i.name}
+              time={moment(i.created_at).fromNow()}
+              text={i.text}
+              sentiment={i.Sentiment}
+              location={i.location}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './BarChart.module.css';
 import Chart from 'react-apexcharts';
 
-function BarChart() {
+function BarChart(props) {
   const options = {
     chart: {
       type: 'donut',
@@ -47,7 +47,15 @@ function BarChart() {
     },
   };
 
-  const [chartdata, setchartdata] = useState([400, 430, 448]);
+  const [chartdata, setchartdata] = useState([0, 0, 0]);
+
+  useEffect(() => {
+    const data = props.data;
+    const chartData = [data[0], data[1], data[2]];
+
+    setchartdata(chartData);
+  }, [props]);
+
   return (
     <div className={styles.chartstyles}>
       <Chart

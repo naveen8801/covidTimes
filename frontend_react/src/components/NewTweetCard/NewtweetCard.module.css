@@ -1,0 +1,83 @@
+.tweetcardcont {
+  width: 90%;
+  margin: 0.8rem;
+}
+
+.flexBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 0.6rem;
+  margin-left: 0.6rem;
+  margin-right: 0.6rem;
+}
+
+.flexbox1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.img {
+  width: 32px;
+  height: 32px;
+  border-radius: 12px;
+}
+
+.name {
+  margin: 0;
+  padding: 0;
+  font-size: 13.5px;
+  margin-left: 0.4rem;
+}
+
+.time {
+  margin: 0;
+  padding: 0;
+  font-size: 13.1px;
+}
+
+.textdiv {
+  width: 100%;
+}
+
+.text {
+  margin-top: 0.6rem;
+  margin-left: 0.6rem;
+  margin-right: 0.6rem;
+  font-size: 12px;
+}
+
+.bottomflex {
+  margin-top: 0.4rem;
+  margin-left: 0.7rem;
+  margin-right: 0.7rem;
+  margin-bottom: 0.8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+
+.sent_div {
+  width: 100px;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 6px;
+}
+
+.loc_div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sentimenttext {
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+}
