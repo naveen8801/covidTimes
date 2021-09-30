@@ -21,10 +21,10 @@ io = SocketIO(app,cors_allowed_origins="*", logger=True, engineio_logger=True)
 # dotenv_path = os.path.join(APP_ROOT, ".env")
 # load_dotenv(dotenv_path)
 
-API_KEY="NrmHvUeDysnKRObAUkRkcDH6s"
-API_SECRET_KEY="s0YqX5h3cxlHQgByP6u8qsyOdDbJW4lL0YnayJJDnBdvMfhrBx"
-ACCESS_TOKEN="1246008382323998721-AWvGrsV2xIT6B7oEt3TqdFaySJW3Gi"
-ACCESS_TOKEN_SECRET="fVH2TldMJLlLXbuSRhFCSQqPwQRHVnioEtinBo6Q2qXAS"
+API_KEY="
+API_SECRET_KEY=""
+ACCESS_TOKEN=""
+ACCESS_TOKEN_SECRET=""
 
 auth = tweepy.OAuthHandler(API_KEY, API_SECRET_KEY)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
