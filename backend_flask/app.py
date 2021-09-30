@@ -31,7 +31,6 @@ auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 api = tweepy.API(auth)
 
 
-
 tweets_list = []
 streams = []
 

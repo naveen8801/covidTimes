@@ -5,6 +5,7 @@ import { BrowserRouter, Link, Switch, Route } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import Home from './pages/Home/Home';
 import User from './pages/User/User';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
 ReactDOM.render(

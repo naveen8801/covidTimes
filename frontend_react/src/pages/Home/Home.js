@@ -12,6 +12,9 @@ import TweetDetailCard from '../../components/TweetDetailCard/TweetDetailCard';
 import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import NewLineChart from '../../components/NewLineChart/NewLineChart';
+import BarChart from '../../components/BarChart/BarChart';
+import CounterCard from '../../components/CounterCard/CounterCard';
 
 const ENDPOINT = 'http://127.0.0.1:5000';
 
@@ -46,71 +49,21 @@ function Home() {
   return (
     <div className={styles.home_container}>
       <ToastContainer position="bottom-center" />
-      <div>
-        <LineChart tweets={tweets} />
+      <div className={styles.flexitems1}>
+        <div className={styles.chartsdiv}>
+          <NewLineChart />
+        </div>
+        <div className={styles.chartsdiv}>
+          <BarChart />
+        </div>
       </div>
-      <div className={styles.data}>
-        {/* {tweets.length !== 0 ? (
-          tweets.slice(tweets.length - 1, tweets.length).map((item) => {
-            return (
-              <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <div>
-                  <LineChart data={tweets} />
-                </div>
-                <div
-                  style={{
-                    display: 'inline-block',
-                    width: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                  key={item.tweet_id}
-                >
-                  <TweetCard
-                    tweet_id={item.tweet_id}
-                    user_id={item.user_id}
-                    name={item.name}
-                    date={item.created_at.split(' ')[0]}
-                    location={item.location}
-                    text={item.text}
-                    profile_icon={item.profileimage}
-                    positive={item.Sentiment === 'Positive' ? true : false}
-                  />
-                  <p
-                    style={{
-                      color: 'white',
-                      fontFamily: 'roboto',
-                      fontSize: '15px',
-                    }}
-                  >
-                    * 1 means positive statement and -1 means a negative
-                    statement.
-                  </p>
-                  <br />
-                  <p
-                    style={{
-                      color: 'white',
-                      fontFamily: 'roboto',
-                      fontSize: '15px',
-                    }}
-                  >
-                    * Subjectivity indeicates it is factuak info or public
-                    opinion
-                  </p>
-                  <TweetDetailCard
-                    polarity={item.polarity}
-                    subjectivity={item.subjectivity}
-                    sentiment={item.Sentiment}
-                  />
-                </div>
-              </div>
-            );
-          })
-        ) : (
-          <div>
-            <CircularProgress />
-          </div>
-        )} */}
+      <div className={styles.flexItemCard}>
+        <CounterCard title="Total" count={50} />
+        <CounterCard title="Positive" count={23} />
+        <CounterCard title="Negative" count={13} />
+      </div>
+      <div className={styles.flexitems2}>
+        <div className={styles.livetweetboard}></div>
       </div>
     </div>
   );
