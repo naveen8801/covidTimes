@@ -1,4 +1,4 @@
-# Covid-19-Realtime-Sentimental-Analysis
+# Twitter Covid-19 Realtime Dashboard
 
 covidTimes
 
